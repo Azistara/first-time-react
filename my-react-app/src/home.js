@@ -1,33 +1,16 @@
-import { useState } from 'react';
 import BlogList from './blogList';
+import useFetch from './useFetch';
 
 const Home = () => {
-    const [blogs, setBlogs] = useState([
-      {
-        title: "Hello World",
-        body: "Windows XP is a major release of the Windows NT operating system...",
-        author: "Mario",
-        id: 1,
-      },
-      {
-        title: "Hey out there!",
-        body: "It's me Steve, have you seen my puppy, Blue?",
-        author: "Steve",
-        id: 2,
-      },
-      {
-        title: "Java",
-        body: "Bean Counters is a mini game featured in the Coffee Shop in Club Penguin.",
-        author: "Club Penguin",
-        id: 3,
-      },
-    ]);
+  const { data:blogs, isPending, error } = useFetch('http://localhost:8000/blogs');
 
-    return ( 
-        <div className="home">
-            <BlogList blogs = { blogs } title = "In the post box"/>
-        </div>
-     );
+    return (
+      <div className="home">
+        { isPending && <div>Loading...</div>}
+        { error && <div>{ error }</div>} 
+        { blogs && <BlogList blogs={ blogs } title="📥 In the post box"/> }
+      </div>
+    );
 }
  
 export default Home
